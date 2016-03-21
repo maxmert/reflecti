@@ -1,0 +1,64 @@
+{
+  "name": "reflecti",
+  "version": "0.0.1",
+  "description": "Flux implementation, that allows you to adapt any Javascript stack to a Flux paradigm.",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "gulp",
+    "test": "mocha --compilers js:babel-core/register --timeout 10000"
+  },
+  "author": "Maxim Vetrenko <me@maxmert.com> (https://github.com/maxmert)",
+  "bugs": {
+    "url": "https://github.com/maxmert/reflecti/issues"
+  },
+  "repository": {
+    "url": "https://github.com/maxmert/reflecti"
+  },
+  "license": "Apache 2.0",
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015",
+            "react"
+          ]
+        }
+      ]
+    ]
+  },
+  "devDependencies": {
+    "babel-core": "6.4.0",
+    "babel-preset-es2015": "6.3.13",
+    "babel-preset-react": "6.3.13",
+    "babelify": "7.2.0",
+    "browserify": "^12.0.1",
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
+    "gulp-if": "^2.0.0",
+    "gulp-jscs": "^1.6.0",
+    "gulp-jshint": "^1.11.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-streamify": "^1.0.2",
+    "gulp-uglifyjs": "^0.6.2",
+    "gulp-util": "^3.0.7",
+    "jshint-stylish": "^2.0.0",
+    "should": "^6.0.1",
+    "sinon": "^1.15.4",
+    "supertest": "^1.0.1",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.6.1",
+    "yargs": "^3.10.0"
+  },
+  "dependencies": {
+    "bluebird": "^2.9.26",
+    "events": "^1.0.2",
+    "immutable": "^3.7.3",
+    "lodash": "^3.8.0",
+    "logup": "0.0.2",
+    "request-promise": "^0.4.2",
+    "rx": "^4.0.6"
+  }
+}
