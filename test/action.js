@@ -1,82 +1,93 @@
-import Immutable from 'immutable';
-import _ from 'lodash';
-import should from 'should';
-import Action from '../src/action.js';
-import Store from '../src/store.js';
+import { expect } from 'chai';
+
+import Action from '../src/action';
+import storeCreator from '../src/store';
+
+let data = {
+    test: 'abc'
+};
+let methods = {
+    add: (value, text) => {
+        return { test: value.test + text };
+    },
+    setLetter: (value, letter) => {
+        return { test: value.test[letter] }
+    }
+};
+let methodsPromises = {
+    add: (value, text) =>
+        new Promise((resolve) => {
+            setTimeout(() => resolve({ test: value.test + text }), 100);
+        }),
+    setLetter: (value, letter) =>
+        new Promise((resolve) => {
+            setTimeout(() => resolve({ test: value.test[letter] }), 100);
+        })
+};
+let methodsCallbacks = {
+    add: (value, text, callback) =>
+        new Promise((resolve) => {
+            setTimeout(() => {
+                const dat = { test: value.test + text };
+
+                resolve(callback(null, dat));
+            }, 100);
+        })
+};
+
+
 
 describe('Action', () => {
-
-    let action;
-    let store;
-    let storeMethods;
-    let methods;
-    let props;
-    let result;
+    let Store;
 
     beforeEach(() => {
-        methods = {
-            set: {
-                success: (data) => {
-                    this.stores.test.data = data;
-                }
-            }
-        };
-
-        storeMethods = {
-            set: {
-                url: 'https://google.com/',
-                method: 'GET',
-                data: {
-                    id: 123
-                }
-            }
-        };
-
-        props = {
-            silent: true
-        };
-
-        store = new Store('test', storeMethods, props);
-        action = new Action('test', methods, props);
+        Store = storeCreator({ name: 'test' });
     });
 
-    describe('creating instance', () => {
-        it('should throw an error if no <name> in constructor', () => {
-            (() => {
-                action = new Action();
-            }).should.throw();
+    describe('instance', () => {
+        it('should throw if Store instance not passed', () => {
+            expect(() => {
+                const action = new Action(123);
+            }).to.throw(`You should pass Store instance to the action constructor.`);
         });
 
-        it('should throw an error if some of the methods has the same name, as reserved methods in the Action', () => {
-            (() => {
-                action = new Action('test', {
-                    build: {}
+        it('should throw if methods not passed', () => {
+            expect(() => {
+                new Action(new Store(data), 123);
+            }).to.throw(`You should pass object with methods as a second parameter to the action constructor.`);
+        });
+
+        describe('methods', () => {
+            it('should be setted', () => {
+                const action = new Action(new Store(data), methods);
+
+                expect(action.add).to.exist;
+                expect(action.setLetter).to.exist;
+            });
+
+            it('should trigger Store dispatch with methods', () => {
+                const action = new Action(new Store(data), methods);
+
+                expect(action.add('cba').getData().test).to.be.equal('abccba');
+                expect(action.add('cba').setLetter(1).getData().test).to.be.equal('b');
+            });
+
+            it('should work with callbacks', (done) => {
+                const action = new Action(new Store(data), methodsCallbacks);
+                action.add('cba', (err, dat) => {
+                    expect(dat.test).to.be.equal('abccba');
+                    done();
                 });
-            }).should.throw();
-        });
+            });
 
-        it('should save all props', () => {
-            action._props.silent.should.be.equal(true);
-        });
+            it('should work with promises', (done) => {
+                const action = new Action(new Store(data), methodsPromises);
 
-        it('should create all methods', () => {
-            should.exist(action.set);
-        });
-
-        it('should create methods with string declaration', () => {
-            let action2 = new Action('test', ['set']);
-            should.exist(action2.set);
-        });
-
-        it('should create methods with mixed declarations', () => {
-            let action2 = new Action('test', ['set' , {
-                del: {
-                    success: _.noop
-                }
-            }]);
-            should.exist(action2.set);
-            should.exist(action2.del);
+                action.add('cba').end().then((dat) => {
+                    expect(dat.test).to.be.equal('abccba');
+                    done();
+                });
+            });
         });
     });
-
 });

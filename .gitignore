@@ -18,6 +18,7 @@ Icon?
 
 /.idea/
 .sass-cache
-dest
+lib
+dist
 /dump.rdb
 **/*.map

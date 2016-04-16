@@ -1,108 +1,41 @@
-import _ from 'lodash';
+import forEach from 'lodash/forEach';
+import isObject from 'lodash/isObject';
+import isFunction from 'lodash/isFunction';
+import partialRight from 'lodash/partialRight';
+import warning from './utils/warnings';
 
-import ReflectiError from './errors.js';
-import * as validate from './libs/validators.js';
-
-const REQUIRED = [];
-const RESERVED = ['build', 'name'];
-
-export default class Action {
-
-    _initialize(name, methods, props) {
-        this.name = name;
-        this._props = props;
+export default function(store, methods, config = {}) {
+    if (!store || !isObject(store) || !isFunction(store.dispatch) || !isFunction(store.getData)) {
+        warning(`You should pass Store instance to the action constructor.`);
     }
 
-    _addMethods(methods) {
-        // Define basic callbacks
-        let errorCallback = (error, ex) => {
-            let storeErrorCallback = this.app.stores.get(this.name).error;
-            if (storeErrorCallback && typeof storeErrorCallback === 'function') {
-                storeErrorCallback(error);
-            }
-            else {
-                if (ex) {
-                    console.error(ex);
-                }
-
-                throw error;
-            }
-        };
-
-        let completeCallback = _.noop;
-
-        let successCallback = (data) => {
-            return data;
-        };
-
-        _.forEach(methods, (method, name) => {
-            let callbacks;
-            let methodName;
-
-            if (_.isNumber(name)) {
-                if (_.isObject(method)) {
-                    methodName = _.keys(method)[0];
-                    callbacks = method[methodName];
-                }
-                else {
-                    methodName = method;
-                    callbacks = {};
-                }
-            }
-            else {
-                methodName = name;
-                callbacks = method;
-            }
-
-            let error = callbacks.error || errorCallback.bind(this);
-            let complete = callbacks.complete || completeCallback;
-            let success = callbacks.success || successCallback;
-
-            // let methodName = _.isString(name) ? name : method;
-
-            if (typeof callbacks !== 'function') {
-
-                this[methodName] = function() {
-                    if (!this.app.params.continuum || !this.app.continuum.isReplaying) {
-                        let store = this.app.stores.get(this.name);
-
-                        return store
-                            .run(methodName, arguments)
-                            .then(success.bind(store))
-                            .error(error.bind(store))
-                            .finally(complete.bind(store));
-                    }
-                }.bind(this);
-            }
-            else {
-                this[methodName] = callbacks.bind(this.app.stores.get(this.name));
-            }
-        });
+    if (!isObject(methods)) {
+        warning(`You should pass object with methods as a second parameter to the action constructor.`);
     }
 
-    constructor(name, methods, props) {
-        if (!validate.strings(name)) {
-            throw new ReflectiError(`wrong type of the [name] in the <Action> constructor. Please, provide correct name type 'string'. You've passed '${typeof name}'.`);
-        }
+    const {
+        middleware = (func) => func
+    } = config;
 
-        let reserved = validate.reserved(RESERVED, methods);
-        if (reserved)  {
-            throw new ReflectiError(`the method names [${reserved}] in the <Action> '${name}' is reserved. Please, use another name.`);
-        }
+    this._cursor = -1;
+    this._data = [];
 
-        this._initialize(name, methods, props);
-        this._addMethods(methods);
-    }
+    this.getData = () => this._data[this._cursor].getData();
 
-    build(context, unitContext) {
-        this.app = context;
-        this.context = unitContext;
+    forEach(methods, (method, name) => {
+        this[name] = function() {
+            const newStore = store.dispatch(partialRight(method, ...arguments));
+            const data = {
+                store: newStore.store,
+                getData: newStore.store.getData
+            };
+            this._cursor += 1;
+            this._data = this._data.slice(0, this._cursor);
+            this._data.push(data);
+            this.end = () => newStore.value;
+            return this;
+        }.bind(this);
+    });
 
-        if (this.app.actions.get(this.name)) {
-            throw new ReflectiError(`you are trying to add two actions with the same name '${this.name}'. Actions should have different names even across different units.`);
-        }
-
-        this.app.actions.set(this.name, this);
-    }
-
+    return this;
 }
