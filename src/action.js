@@ -13,25 +13,22 @@ export default function(store, methods) {
         warning(`You should pass object with methods as a second parameter to the action constructor.`);
     }
 
-    // this._cursor = -1;
-    // this._data = [];
-    //
-    // this.getData = () => this._data[this._cursor].getData();
+    this.addMethod = (name, method) => this._add(method, name);
 
-    forEach(methods, (method, name) => {
+    this._add = (method, name) => {
+        if (this[name]) {
+            warning(`The method with name ${name} already exists in Action.`);
+        }
+
         this[name] = function() {
             const newStore = store.dispatch(partialRight(method, ...arguments));
-            // const data = {
-            //     store: newStore.store,
-            //     getData: newStore.store.getData
-            // };
-            // this._cursor += 1;
-            // this._data = this._data.slice(0, this._cursor);
-            // this._data.push(data);
-            this.end = () => newStore.value;
+            this.getData = () => newStore.getData();
+            this.getStore = () => newStore;
             return this;
         }.bind(this);
-    });
+    };
+
+    forEach(methods, this._add);
 
     return this;
 }

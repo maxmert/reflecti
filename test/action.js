@@ -65,8 +65,16 @@ describe('Action', () => {
                 expect(action.setLetter).to.exist;
             });
 
+            it('should throw if method already exists', () => {
+                let action = new Action(new Store(data), methods);
+                expect(() => {
+                    action.addMethod('add', () => null);
+                }).to.throw('The method with name add already exists in Action.');
+            });
+
             it('should trigger Store dispatch with methods', () => {
-                const action = new Action(new Store(data), methods);
+                const store = new Store(data);
+                const action = new Action(store, methods);
 
                 expect(action.add('cba').getData().test).to.be.equal('abccba');
                 expect(action.add('cba').setLetter(1).getData().test).to.be.equal('b');
@@ -83,7 +91,7 @@ describe('Action', () => {
             it('should work with promises', (done) => {
                 const action = new Action(new Store(data), methodsPromises);
 
-                action.add('cba').end().then((dat) => {
+                action.add('cba').getData().then((dat) => {
                     expect(dat.test).to.be.equal('abccba');
                     done();
                 });

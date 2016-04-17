@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 
 import storeCreator from '../src/store';
+import timemachine from '../src/middlewares/timemachine';
 
 describe('Store', () => {
     let Store;
@@ -21,14 +22,6 @@ describe('Store', () => {
                     middlewares: 123
                 });
             }).to.throw('While creating a Store. Please, pass array of middlewares. You\'ve passed number.');
-        });
-
-        it('should check normalize function', () => {
-            expect(() => {
-                Store = storeCreator({
-                    normalize: 123
-                });
-            }).to.throw('While creating a Store. Please, pass function \'normalize\'. You\'ve passed number.');
         });
     });
 
@@ -53,48 +46,47 @@ describe('Store', () => {
 
         it('should return proper fields after dispatching methods', () => {
             const store = new Store(1);
-            const res = store.dispatch((value) => value + 1);
-            expect(res.value).to.exist;
-            expect(res.store).to.exist;
+            const nextStore = store.dispatch((value) => value + 1);
+            expect(nextStore.getData).to.exist;
         });
 
         it('should return proper next value after dispatching methods', () => {
             const store = new Store(1);
-            const res = store.dispatch((value) => value + 2);
-            expect(res.value).to.be.equal(3);
-            expect(res.store.dispatch((value) => value + 2).value).to.be.equal(5);
+            const nextStore = store.dispatch((value) => value + 2);
+            expect(nextStore.getData()).to.be.equal(3);
+            expect(nextStore.dispatch((value) => value + 2).getData()).to.be.equal(5);
         });
     });
 
     describe('middlewares', () => {
         it('should be able to use the result', () => {
             const store = new Store(1);
-            store.use((res) => {
-                res.store.newMethod = () => res.value + 10;
-                return res;
+            store.use((prevStore) => {
+                prevStore.newMethod = () => prevStore.getData() + 10;
+                return prevStore;
             });
-            const res = store.dispatch((value) => value + 2);
-            expect(res.value).to.be.equal(3);
-            expect(res.store.newMethod).to.exist;
-            expect(res.store.newMethod()).to.be.equal(13);
+            const nextStore = store.dispatch((value) => value + 2);
+            expect(nextStore.getData()).to.be.equal(3);
+            expect(nextStore.newMethod).to.exist;
+            expect(nextStore.newMethod()).to.be.equal(13);
         });
 
         it('should be multiple for one store', () => {
             const store = new Store(1);
-            store.use((res) => {
-                res.store.newMethod = () => res.value + 10;
-                return res;
+            store.use((prevStore) => {
+                prevStore.newMethod = () => prevStore.getData() + 10;
+                return prevStore;
             });
-            store.use((res) => {
-                res.store.oldMethod = () => res.value + 20;
-                return res;
+            store.use((prevStore) => {
+                prevStore.oldMethod = () => prevStore.getData() + 20;
+                return prevStore;
             });
-            const res = store.dispatch((value) => value + 2);
-            expect(res.value).to.be.equal(3);
-            expect(res.store.newMethod).to.exist;
-            expect(res.store.newMethod()).to.be.equal(13);
-            expect(res.store.oldMethod).to.exist;
-            expect(res.store.oldMethod()).to.be.equal(23);
+            const nextStore = store.dispatch((value) => value + 2);
+            expect(nextStore.getData()).to.be.equal(3);
+            expect(nextStore.newMethod).to.exist;
+            expect(nextStore.newMethod()).to.be.equal(13);
+            expect(nextStore.oldMethod).to.exist;
+            expect(nextStore.oldMethod()).to.be.equal(23);
         });
     });
 });

@@ -16,18 +16,13 @@ const checkConfig = (config) => {
     if (middlewares && !Array.isArray(middlewares)) {
         warning(`While creating a Store. Please, pass array of middlewares. You've passed ${typeof middlewares}.`);
     }
-
-    if (normalize && !isFunction(normalize)) {
-        warning(`While creating a Store. Please, pass function 'normalize'. You've passed ${typeof normalize}.`);
-    }
 };
 
 export default function(config = {}) {
     checkConfig(config);
 
     const {
-        middlewares = [(value) => value],
-        normalize = (value) => value
+        middlewares = [(value) => value]
     } = config;
 
     const _middlewares = clone(middlewares);
@@ -40,18 +35,19 @@ export default function(config = {}) {
 
     function Store(value) {
         this.use = use;
-        this.getData = normalize.bind(this, value);
+        this.getData = () => value;
         this.dispatch = (method) => {
             const nextValue = method(value);
-            const res = {
-                store: new Store(nextValue),
-                value: nextValue
-            };
+            const nextStore = new Store(nextValue);
+            // const res = {
+            //     store: new Store(nextValue),
+            //     value: nextValue
+            // };
 
             return _middlewares.reduce((result, middleware) => {
                 result = middleware(result); // eslint-disable-line
                 return result;
-            }, res);
+            }, nextStore);
         };
     }
 
