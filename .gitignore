@@ -15,7 +15,7 @@ Icon?
 #######################
 
 **/node_modules/
-
+__
 /.idea/
 .sass-cache
 lib
