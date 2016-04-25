@@ -7,14 +7,16 @@ import merge from 'lodash/merge';
 
 /* eslint-disable no-param-reassign */
 export default function(globalStore) {
-    return function(store) {
-        const globalData = {};
+    return {
+        data: (store) => {
+            const globalData = {};
 
-        // TODO: Perhaps merging all is not the best idea, because at some point we will need to remove some data
-        // from global store because it was removed from the local one.
-        merge(globalData, globalStore.getData(), store.getData());
-        globalStore.getData = () => globalData;
-        return store;
+            // TODO: Perhaps merging all is not the best idea, because at some point we will need to remove some data
+            // from global store because it was removed from the local one.
+            merge(globalData, globalStore.getData(), store.getData());
+            globalStore.getData = () => globalData;
+            return store;
+        }
     };
 }
 

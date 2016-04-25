@@ -18,9 +18,11 @@
 /* eslint-disable no-unused-vars */
 export default function(initialStore) {
 /* eslint-enable no-unused-vars */
-    return function(store) {
-        // FIXME: Should I clone it? Or leave to have side effects by other middlewares?
-        Object.keys(store).forEach((key) => initialStore[key] = store[key]); // eslint-disable-line
-        return store;
+    return {
+        data: (store) => {
+            // FIXME: Should I clone it? Or leave to have side effects by other middlewares?
+            Object.keys(store).forEach((key) => initialStore[key] = store[key]); // eslint-disable-line
+            return store;
+        }
     };
 }

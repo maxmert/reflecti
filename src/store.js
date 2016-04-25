@@ -12,15 +12,20 @@ export default function(init, config = {}) {
     };
 
     function Store(value, oldValue) {
-        // TODO: Check middlewares
-        this.use = (middleware) => {
-            _middlewares.push(middleware);
-            return _middlewares.reduce(applyMiddleware, new Store(value, oldValue));
-        };
         this.getData = () => value;
         this._getOldData = () => oldValue;
-        this.dispatch = (method) => _middlewares.reduce(applyMiddleware, new Store(method(value), value));
+        this.dispatch = (method = (val) => val) => _middlewares.reduce(applyMiddleware, new Store(method(value), value));
     }
+
+    Store.prototype.use = (middleware) => {
+        // TODO: Check middlewares
+        if (middleware.store) {
+            middleware.store(Store);
+        }
+        if (middleware.data) {
+            _middlewares.push(middleware.data);
+        }
+    };
 
     return _middlewares.reduce(applyMiddleware, new Store(init));
 }

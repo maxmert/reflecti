@@ -13,7 +13,7 @@ describe('Middleware', () => {
         store = createStore(10);
         callback = sinon.spy();
         const middleware = emitterMiddleware();
-        store = store.use(middleware);
+        store.use(middleware);
     });
 
     describe('Emitter', () => {

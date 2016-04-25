@@ -34,8 +34,11 @@ describe('Middleware', () => {
         store2 = createStore(dataLocal2);
         const middleware = singleMiddleware(globalStore);
 
-        store1 = store1.use(middleware);
-        store2 = store2.use(middleware);
+        store1.use(middleware);
+        store2.use(middleware);
+
+        store1.dispatch();
+        store2.dispatch();
     });
 
     describe('Single', () => {
