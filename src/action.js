@@ -1,5 +1,4 @@
 import forEach from 'lodash/forEach';
-import partialRight from 'lodash/partialRight';
 
 export default function(store, methods) {
     // TODO: Check store and methods
