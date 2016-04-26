@@ -5,6 +5,8 @@ import flatMap from 'lodash/flatMap';
 import createStore from '../../../src/store';
 import emitterMiddleware from '../../../src/middlewares/emitter';
 
+/* eslint-disable no-unused-expressions */
+
 describe('Middleware', () => {
     let store;
     let callback;
@@ -69,3 +71,5 @@ describe('Middleware', () => {
         });
     });
 });
+
+/* eslint-enable no-unused-expressions */

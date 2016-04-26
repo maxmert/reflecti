@@ -14,18 +14,20 @@ const action = new Action(store, {
     plus: (value, toAdd) => ({ count: value.count + toAdd })
 });
 
-// add tests
+/* eslint-disable no-console */
 suite
-    .add('Reflecti', function() {
+    .add('Reflecti', () => {
         action.plus(1);
     })
-    .add('Redux', function() {
+    .add('Redux', () => {
         reduxStore.dispatch({ type: 'INCREMENT' });
     })
-    .on('cycle', function(event) {
+    .on('cycle', (event) => {
         console.log(String(event.target));
     })
-    .on('complete', function() {
-        console.log('Fastest is ' + this.filter('fastest').map('name'));
+    .on('complete', () => {
+        console.log(`Fastest is ${this.filter('fastest').map('name')}`);
     })
     .run({ async: true });
+
+/* eslint-enable no-console */

@@ -1,6 +1,4 @@
 import { expect } from 'chai';
-import sinon from 'sinon';
-import flatMap from 'lodash/flatMap';
 
 import createStore from '../../../src/store';
 import singleMiddleware from '../../../src/middlewares/single';
@@ -49,7 +47,7 @@ describe('Middleware', () => {
         });
 
         it('should be changed according to changed data in local stores', () => {
-            const newStore = store1.dispatch((value) => ({ local: { value: value.local.value + 1 }}));
+            store1.dispatch((value) => ({ local: { value: value.local.value + 1 } }));
             expect(globalStore.getData()).to.have.deep.property('local.value', 3);
         });
     });

@@ -6,7 +6,7 @@ import storageMiddleware from '../../../src/middlewares/storage';
 describe('Middleware', () => {
     describe('Storage', () => {
         it('should be applicable', () => {
-            let store = createStore(10);
+            const store = createStore(10);
             const middleware = storageMiddleware(store);
             store.use(middleware);
             store.dispatch((value) => value - 4).dispatch((value) => value * 10);

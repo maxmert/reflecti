@@ -1,19 +1,16 @@
 import { expect } from 'chai';
-import sinon from 'sinon';
-import flatMap from 'lodash/flatMap';
 
 import createStore from '../../../src/store';
 import timemashineMiddleware from '../../../src/middlewares/time-mashine';
 
+/* eslint-disable no-unused-expressions */
+
 describe('Middleware', () => {
     let store;
-    let callback;
 
     beforeEach(() => {
         store = createStore(10);
-        callback = sinon.spy();
-        const middleware = timemashineMiddleware();
-        store.use(middleware);
+        store.use(timemashineMiddleware());
     });
 
     describe('Time Mashine', () => {
@@ -52,6 +49,8 @@ describe('Middleware', () => {
             expect(newStore.getData()).to.be.equal(65);
             newStore.redo();
             expect(newStore.getData()).to.be.equal(65);
-        })
+        });
     });
 });
+
+/* eslint-enable no-unused-expressions */

@@ -1,9 +1,10 @@
 import { expect } from 'chai';
-import clone from 'lodash/clone';
 
 import Action from '../../src/action';
 import storageMiddleware from '../../src/middlewares/storage';
 import { actionMethods, getStore } from './data';
+
+/* eslint-disable no-unused-expressions */
 
 describe('Action', () => {
     let action;
@@ -37,3 +38,5 @@ describe('Action', () => {
         });
     });
 });
+
+/* eslint-enable no-unused-expressions */

@@ -4,18 +4,20 @@ import clone from 'lodash/clone';
 import createStore from '../../src/store';
 import { getStore } from './data';
 
+/* eslint-disable no-unused-expressions */
+
 describe('Store', () => {
     let store;
 
     describe('instance', () => {
         it('should have method \'dispatch\'', () => {
-            const store = getStore();
+            store = getStore();
             expect(store.dispatch).to.exist;
             expect(store.dispatch).to.be.a('function');
         });
 
         it('should save initial data', () => {
-            const store = createStore(5);
+            store = createStore(5);
             expect(store.getData()).to.be.equal(5);
         });
 
@@ -59,3 +61,5 @@ describe('Store', () => {
         });
     });
 });
+
+/* eslint-enable no-unused-expressions */
