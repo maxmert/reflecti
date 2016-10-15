@@ -9,12 +9,11 @@ import { actionMethods, getStore } from './data';
 describe('Action', () => {
     let action;
     let store;
-    let middleware;
 
     beforeEach(() => {
         store = getStore();
-        middleware = storageMiddleware(store);
-        store.use(middleware);
+        storageMiddleware(store);
+
         action = new Action(store, actionMethods);
     });
 

@@ -16,8 +16,8 @@ describe('Middleware', () => {
         store = createStore(10);
         next = sinon.spy();
         error = sinon.spy();
-        const middleware = observableMiddleware();
-        store.use(middleware);
+
+        observableMiddleware(store);
     });
 
     describe('Observable', () => {

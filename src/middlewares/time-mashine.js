@@ -4,11 +4,11 @@
  */
 
 /* eslint-disable no-param-reassign */
-export default function() {
+export default function(initialStore) {
     let cursor = -1;
     let continuum = [];
 
-    return {
+    initialStore.use({
         store: (store) => {
             store.prototype.undo = (steps = 1) => {
                 cursor = cursor - steps < 0 ? 0 : cursor - steps;
@@ -32,7 +32,7 @@ export default function() {
 
             return store;
         }
-    };
+    });
 }
 
 /* eslint-enable no-param-reassign */

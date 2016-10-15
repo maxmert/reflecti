@@ -14,8 +14,7 @@ describe('Middleware', () => {
     beforeEach(() => {
         store = createStore(10);
         callback = sinon.spy();
-        const middleware = emitterMiddleware();
-        store.use(middleware);
+        emitterMiddleware(store);
     });
 
     describe('Emitter', () => {

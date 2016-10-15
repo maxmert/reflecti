@@ -13,7 +13,7 @@ export default function(init, config = {}) {
 
     function Store(value, oldValue) {
         this.getData = () => value;
-        this._getOldData = () => oldValue;
+        this.getPrevData = () => oldValue;
         this.dispatch = (method = (val) => val) => _middlewares.reduce(applyMiddleware, new Store(method(value), value));
     }
 

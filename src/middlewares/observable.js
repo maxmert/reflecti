@@ -7,10 +7,10 @@ import Rx from 'rx';
 import isEqual from 'lodash/isEqual';
 
 /* eslint-disable no-param-reassign */
-export default function() {
+export default function(initialStore) {
     const subject = new Rx.Subject();
 
-    return {
+    initialStore.use({
         store: (store) => {
             store.prototype.subscribe = (next, error, completed) => {
                 store._onError = error;
@@ -19,7 +19,7 @@ export default function() {
         },
 
         data: (store) => {
-            if (!isEqual(store.getData(), store._getOldData())) {
+            if (!isEqual(store.getData(), store.getPrevData())) {
                 // If store observable disposed and we still setting to the store.
                 try {
                     subject.onNext(store.getData());
@@ -33,7 +33,7 @@ export default function() {
 
             return store;
         }
-    };
+    });
 }
 
 /* eslint-enable no-param-reassign */

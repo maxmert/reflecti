@@ -2,15 +2,14 @@
   "name": "reflecti",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/reflecti.js",
   "scripts": {
-    "babel-node": "babel-node --presets=es2015",
     "lint": "./node_modules/eslint/bin/eslint.js src test build",
     "test": "cross-env BABEL_ENV=commonjs mocha --compilers js:babel-register --recursive ./test/unit",
     "test:bench": "cross-env BABEL_ENV=commonjs npm run babel-node -- test/performance/test.js",
     "test:watch": "npm test -- --watch",
-    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
-    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es",
+    "build:watch": "webpack --watch",
+    "build": "npm run build:umd:min",
     "build:umd": "cross-env BABEL_ENV=commonjs NODE_ENV=development webpack src/index.js dist/reflecti.js",
     "build:umd:min": "cross-env BABEL_ENV=commonjs NODE_ENV=production webpack src/index.js dist/reflecti.min.js"
   },

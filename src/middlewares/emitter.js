@@ -2,14 +2,13 @@
  * Purpose:
  * To emit event if data changed.
  */
-import EventEmitter from 'events';
+import Emitter from 'events';
 import isEqual from 'lodash/isEqual';
-class Emitter extends EventEmitter {}
 
-export default function() {
+export default function(initialStore) {
     const emitter = new Emitter();
 
-    return {
+    initialStore.use({
         store: (store) => {
             // TODO: Check existing methods?
             store.prototype.on = (eventName, callback) => emitter.on(eventName, callback); // eslint-disable-line
@@ -18,10 +17,10 @@ export default function() {
         },
 
         data: (store) => {
-            if (!isEqual(store.getData(), store._getOldData())) {
+            if (!isEqual(store.getData(), store.getPrevData())) {
                 emitter.emit('data', store.getData());
             }
             return store;
         }
-    };
+    });
 }

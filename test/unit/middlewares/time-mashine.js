@@ -10,7 +10,7 @@ describe('Middleware', () => {
 
     beforeEach(() => {
         store = createStore(10);
-        store.use(timemashineMiddleware());
+        timemashineMiddleware(store);
     });
 
     describe('Time Mashine', () => {

@@ -19,6 +19,5 @@ __
 /.idea/
 .sass-cache
 lib
-dist
 /dump.rdb
 **/*.map
