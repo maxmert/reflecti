@@ -9,9 +9,9 @@
     "test:bench": "cross-env BABEL_ENV=commonjs npm run babel-node -- test/performance/test.js",
     "test:watch": "npm test -- --watch",
     "build:watch": "webpack --watch",
-    "build": "npm run build:umd:min",
-    "build:umd": "cross-env BABEL_ENV=commonjs NODE_ENV=development webpack src/index.js dist/reflecti.js",
-    "build:umd:min": "cross-env BABEL_ENV=commonjs NODE_ENV=production webpack src/index.js dist/reflecti.min.js"
+    "build": "npm run build:umd:min; npm run build:umd",
+    "build:umd": "cross-env BABEL_ENV=commonjs NODE_ENV=development webpack index.js dist/reflecti.js",
+    "build:umd:min": "cross-env BABEL_ENV=commonjs NODE_ENV=production webpack index.js dist/reflecti.min.js"
   },
   "pre-commit": [
     "lint",

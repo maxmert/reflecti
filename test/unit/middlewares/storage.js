@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
-import createStore from '../../../src/store';
-import storageMiddleware from '../../../src/middlewares/storage';
+import createStore from '../../../store';
+import storageMiddleware from '../../../middlewares/storage';
 
 describe('Middleware', () => {
     describe('Storage', () => {

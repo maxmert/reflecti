@@ -89,7 +89,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _observable = __webpack_require__(61);
 
-	Object.defineProperty(exports, 'emitterObservable', {
+	Object.defineProperty(exports, 'observableMiddleware', {
 	  enumerable: true,
 	  get: function get() {
 	    return _interopRequireDefault(_observable).default;
@@ -98,7 +98,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _single = __webpack_require__(62);
 
-	Object.defineProperty(exports, 'singleObservable', {
+	Object.defineProperty(exports, 'singleMiddleware', {
 	  enumerable: true,
 	  get: function get() {
 	    return _interopRequireDefault(_single).default;
@@ -107,7 +107,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _storage = __webpack_require__(63);
 
-	Object.defineProperty(exports, 'storageObservable', {
+	Object.defineProperty(exports, 'storageMiddleware', {
 	  enumerable: true,
 	  get: function get() {
 	    return _interopRequireDefault(_storage).default;
@@ -116,7 +116,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _timeMashine = __webpack_require__(64);
 
-	Object.defineProperty(exports, 'timeMashineObservable', {
+	Object.defineProperty(exports, 'timeMashineMiddleware', {
 	  enumerable: true,
 	  get: function get() {
 	    return _interopRequireDefault(_timeMashine).default;

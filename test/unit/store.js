@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import clone from 'lodash/clone';
 
-import createStore from '../../src/store';
+import createStore from '../../store';
 import { getStore } from './data';
 
 /* eslint-disable no-unused-expressions */

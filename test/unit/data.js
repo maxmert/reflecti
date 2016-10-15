@@ -1,4 +1,4 @@
-import createStore from '../../src/store';
+import createStore from '../../store';
 
 const data = {
     count: 0

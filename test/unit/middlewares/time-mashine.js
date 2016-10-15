@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
-import createStore from '../../../src/store';
-import timemashineMiddleware from '../../../src/middlewares/time-mashine';
+import createStore from '../../../store';
+import timemashineMiddleware from '../../../middlewares/time-mashine';
 
 /* eslint-disable no-unused-expressions */
 

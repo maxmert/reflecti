@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
-import createStore from '../../../src/store';
-import singleMiddleware from '../../../src/middlewares/single';
+import createStore from '../../../store';
+import singleMiddleware from '../../../middlewares/single';
 
 const dataGlobal = {
     initialGlobal: {

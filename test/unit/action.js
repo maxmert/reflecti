@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
-import Action from '../../src/action';
-import storageMiddleware from '../../src/middlewares/storage';
+import Action from '../../action';
+import storageMiddleware from '../../middlewares/storage';
 import { actionMethods, getStore } from './data';
 
 /* eslint-disable no-unused-expressions */

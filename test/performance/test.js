@@ -1,7 +1,7 @@
 import Benchmark from 'benchmark';
 
-import Action from '../../src/action';
-import createReflectiStore from '../../src/store';
+import Action from '../../action';
+import createReflectiStore from '../../store';
 
 import { createStore } from 'redux';
 import counter from './reduxReducers';

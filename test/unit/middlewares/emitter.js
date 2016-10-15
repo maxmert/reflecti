@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import flatMap from 'lodash/flatMap';
 
-import createStore from '../../../src/store';
-import emitterMiddleware from '../../../src/middlewares/emitter';
+import createStore from '../../../store';
+import emitterMiddleware from '../../../middlewares/emitter';
 
 /* eslint-disable no-unused-expressions */
 
