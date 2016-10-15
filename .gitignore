@@ -15,9 +15,9 @@ Icon?
 #######################
 
 **/node_modules/
-
+__
 /.idea/
 .sass-cache
-dest
+lib
 /dump.rdb
 **/*.map
